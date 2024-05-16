@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class SwordAttack : MonoBehaviour
-{   
-    
+{
+
 
     public Collider2D swordCollider;
     public Collider2D swordColliderUp;
     public Collider2D swordColliderDown;
-    public Transform swordHitboxUp; 
+    public Transform swordHitboxUp;
     public Transform swordHitboxDown;
 
     Vector2 rightAttackOffset;
@@ -22,46 +22,55 @@ public class SwordAttack : MonoBehaviour
     private void Start()
     {
         rightAttackOffset = transform.position;
-        upAttackOffset = swordHitboxUp.position;
-        downAttackOffset = swordHitboxDown.position;
+        upAttackOffset = transform.InverseTransformPoint(swordHitboxUp.position);
+        downAttackOffset = transform.InverseTransformPoint(swordHitboxDown.position);
     }
 
-    public void AttackRight() {
+    public void AttackRight()
+    {
         swordCollider.enabled = true;
         transform.localPosition = rightAttackOffset;
     }
 
-    public void AttackLeft() {
+    public void AttackLeft()
+    {
         swordCollider.enabled = true;
-        transform.localPosition= new Vector3(-rightAttackOffset.x, rightAttackOffset.y);
-    }   
+        transform.localPosition = new Vector3(-rightAttackOffset.x, rightAttackOffset.y);
+    }
 
-    public void AttackUp() {
+    public void AttackUp()
+    {
         swordColliderUp.enabled = true;
         transform.localPosition = upAttackOffset;
     }
 
-    public void AttackDown() {
+    public void AttackDown()
+    {
         swordColliderDown.enabled = true;
         transform.localPosition = downAttackOffset;
     }
 
-    public void StopAttack() {
+    public void StopAttack()
+    {
         swordCollider.enabled = false;
         swordColliderUp.enabled = false;
         swordColliderDown.enabled = false;
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        if(other.tag == "Enemy") {
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Enemy")
+        {
             Enemy enemy = other.GetComponent<Enemy>();
-            if(enemy != null) {
+            if (enemy != null)
+            {
                 StartCoroutine(DealDamageAfterDelay(enemy, 0.1f));
             }
         }
     }
-    private IEnumerator DealDamageAfterDelay(Enemy enemy, float delay) {
-    yield return new WaitForSeconds(delay);
-    enemy.Health -= damage;
-}
+    private IEnumerator DealDamageAfterDelay(Enemy enemy, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        enemy.Health -= damage;
+    }
 }

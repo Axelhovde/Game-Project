@@ -1,0 +1,8 @@
+32x32 pixel player character
+Dark grey: 272727
+mid grey: 454343
+main color: 6f747e
+shadow color: 4f515d
+dark shadow: 
+outline: 454752
+Red: 951a1a
