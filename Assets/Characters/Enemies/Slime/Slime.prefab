@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8149712067997977466}
   - component: {fileID: 4044222958415302665}
   - component: {fileID: 2306776871042214406}
+  - component: {fileID: 4775966038907473728}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Enemy
@@ -100,9 +101,9 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 0.5
-  m_LinearDrag: 0.5
-  m_AngularDrag: 0.05
+  m_Mass: 1
+  m_LinearDrag: 10
+  m_AngularDrag: 0.5
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -127,7 +128,7 @@ CapsuleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -147,9 +148,9 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0029566586, y: 0.035400957}
-  m_Size: {x: 0.11736697, y: 0.11736697}
-  m_Direction: 0
+  m_Offset: {x: 0.0029566584, y: 0.025404582}
+  m_Size: {x: 0.11736703, y: 0.087378256}
+  m_Direction: 1
 --- !u!114 &4044222958415302665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,6 +166,8 @@ MonoBehaviour:
   detectionRadius: 1
   moveSpeed: 0
   CollisionOffset: 0.01
+  rb: {fileID: 5881798331371921286}
+  physicsCollider: {fileID: 0}
   movementFilter:
     useTriggers: 0
     useLayerMask: 0
@@ -181,6 +184,7 @@ MonoBehaviour:
     maxNormalAngle: 0
   hit: 0
   canMove: 1
+  targetable: 1
 --- !u!95 &2306776871042214406
 Animator:
   serializedVersion: 5
@@ -202,3 +206,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!210 &4775966038907473728
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4121224088288275657}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0

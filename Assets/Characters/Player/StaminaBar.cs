@@ -8,12 +8,12 @@ public class StaminaBar : MonoBehaviour
 
     public Slider slider;
 
-    public void SetMaxStamina(int stamina)
+    public void SetMaxStamina(float stamina)
     {
         slider.maxValue = stamina;
         slider.value = stamina;
     }
-    public void UpdateStamina(int stamina)
+    public void UpdateStamina(float stamina)
     {
         if (slider != null)
         {
@@ -27,7 +27,7 @@ public class StaminaBar : MonoBehaviour
             Debug.LogWarning("Slider is not assigned in HealthBar.");
         }
     }
-    public void SetStamina(int stamina)
+    public void SetStamina(float stamina)
     {
         if (slider != null)
         {
