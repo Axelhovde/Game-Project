@@ -3,34 +3,55 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
 public class DamageableCharacter : MonoBehaviour, IDamageable
 {
+    public GameObject healthText;
     Animator animator;
     public Rigidbody2D rb;
     public Collider2D physicsCollider;
+    public LevelBar levelBar;
+    public float maxHealth;
+    public int xpGiven;
 
-    public float Health
+    public float GetMaxHealth()
     {
-        set
+        return maxHealth;
+    }
+    public void SetMaxHealth(float maxHealth)
+    {
         {
-            if (value < health)
+            if (maxHealth > 0)
+            {
+                this.maxHealth = maxHealth;
+            }
+        }
+    }
+    public float GetHealth()
+    {
+        return health;
+    }
+    public void SetHealth(float health)
+    {
+        {
+            if (this.health < health)
             {
                 animator.SetTrigger("Damaged");
+                RectTransform textTransform = Instantiate(healthText).GetComponent<RectTransform>();
+                textTransform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
             }
-            health = value;
-            if (health <= 0)
+            this.health = health;
+            if (this.health <= 0)
             {
                 targetable = false;
                 animator.SetTrigger("Defeated");
+                Debug.Log("Enemy defeated, and " + xpGiven + " xp given.");
+                levelBar.AddXp(xpGiven);
             }
-        }
-        get
-        {
-            return health;
         }
     }
 
@@ -40,17 +61,28 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
         { return targetable; }
         set
         {
+            if (enableSimulation)
+            {
+                rb.simulated = value;
+            }
             targetable = value;
-            rb.simulated = value;
+            physicsCollider.enabled = value;
         }
     }
-    private float health = 10;
+    public void SetTargetableFalse()
+    {
+        Targetable = false;
+    }
+    public float health;
     public bool targetable = true;
+    public bool enableSimulation;
     private void Start()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         physicsCollider = GetComponent<Collider2D>();
+        health = maxHealth;
+        levelBar = GameObject.Find("LvlBar").GetComponent<LevelBar>();
 
     }
 
@@ -68,14 +100,14 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
 
     public void OnHit(float damage, Vector2 knockback)
     {
-        Health -= damage;
+        SetHealth(GetHealth() - damage);
         rb.AddForce(knockback);
         animator.SetTrigger("Damaged");
     }
 
     public void OnHit(float damage)
     {
-        Health -= damage;
+        SetHealth(GetHealth() - damage);
     }
 
 }

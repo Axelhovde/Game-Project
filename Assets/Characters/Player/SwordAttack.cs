@@ -69,9 +69,14 @@ public class SwordAttack : MonoBehaviour
 
             damageableObject.OnHit(damage, knockback);
         }
-        else
+        if (collider.tag == "Destructible")
         {
-            Debug.Log("No damageable object found");
+            print("Tree Hit");
+            TreeHandler treeHandler = collider.GetComponentInParent<TreeHandler>();
+            if (treeHandler != null)
+            {
+                treeHandler.ShakeTree();
+            }
         }
     }
 

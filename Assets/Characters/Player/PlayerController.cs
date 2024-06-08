@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
         public int maxStamina = 100; */
     /*     public int currentHealth; */
     public SwordAttack swordAttack;
-    public PlayerHealth playerHealth;
+    public PlayerStats playerHealth;
     Vector2 moveInput = Vector2.zero;
     SpriteRenderer spriteRenderer;
     public Rigidbody2D rb;
@@ -21,18 +21,13 @@ public class PlayerController : MonoBehaviour
     bool canMove = true;
     private bool isDodging = false;
     private Vector2 dodgeDirection;
-    /*     public HealthBar healthBar;
-        public StaminaBar staminaBar; */
+    private bool dodgeSet = false;
 
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        /*         playerHealth.Health = maxHealth;
-                playerHealth.SetMaxHealth(maxHealth);
-                playerHealth.SetMaxStamina(maxStamina); */
-        /*         StartCoroutine(SetStaminaOverTime()); */
+
     }
 
     private void FixedUpdate()
@@ -42,8 +37,21 @@ public class PlayerController : MonoBehaviour
             Move();
         }
         if (!isDodging) { UpdateAnimatorParameters(); }
+        else if (isDodging && !dodgeSet)
+        {
+            SetDodgeAnimatorParameters();
+        }
     }
 
+    void SetDodgeAnimatorParameters()
+    {
+        animator.SetBool("isMoving", true);
+        animator.SetFloat("moveX", dodgeDirection.x);
+        animator.SetFloat("moveY", dodgeDirection.y);
+        animator.SetBool("isMoving", true);
+        animator.SetTrigger("dodge");
+        dodgeSet = true;
+    }
     void UpdateAnimatorParameters()
     {
         animator.SetFloat("moveX", moveInput.x);
@@ -110,37 +118,11 @@ public class PlayerController : MonoBehaviour
         moveInput = value.Get<Vector2>();
     }
 
-    /*     IEnumerator SetStaminaOverTime()
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(0.1f);
-                if (animator.GetBool("isMoving"))
-                {
-                    staminaBar.UpdateStamina(1);
-                }
-                else
-                {
-                    staminaBar.UpdateStamina(1);
-                }
-            }
-        } */
-
-    /* void Die()
-    {
-        /* Destroy(gameObject); */
-    /* print("You died");
- } */
 
     void OnFire()
     {
         animator.SetTrigger("swordAttack");
     }
-    /* 
-        void UseStamina()
-        {
-            staminaBar.UpdateStamina(-15);
-        } */
 
     public void SwordAttack()
     {
@@ -180,52 +162,63 @@ public class PlayerController : MonoBehaviour
 
     void OnDodge()
     {
-        animator.SetTrigger("dodge");
-        LockMovement();
-        playerHealth.UpdateStamina(-15f);
+        if (!isDodging && playerHealth.Stamina >= 20)
+        {
+            isDodging = true;
+            LockMovement();
+            playerHealth.UpdateStamina(-20f);
+            maxSpeed = maxSpeed * 2;
+            //if not walking currently, dodge in the direction the player is facing
+            if (moveInput == Vector2.zero)
+            {
+                //if animator is in player_idleUpwards state, dodge upwards
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("player_idleUpwards"))
+                {
+                    dodgeDirection = new Vector2(0, 1);
+                }
+                //if animator is in player_idle state, dodge downwards
+                else if (animator.GetCurrentAnimatorStateInfo(0).IsName("player_idle"))
+                {
+                    dodgeDirection = new Vector2(0, -1);
+                }
+                else if (spriteRenderer.flipX == true)
+                {
+                    dodgeDirection = new Vector2(-1, 0);
+                }
+                else
+                {
+                    dodgeDirection = new Vector2(1, 0);
+                }
+            }
+            else
+            {
+                float inputX = Input.GetAxisRaw("Horizontal");
+                float inputY = Input.GetAxisRaw("Vertical");
+                //dodgeDirection is the input x and y values rounded to 1 or 0, and then normalized
+                dodgeDirection = new Vector2(Mathf.Round(inputX), Mathf.Round(inputY)).normalized;
+            }
+        }
+
+
     }
 
     public void dodge()
     {
         UnlockMovement();
 
-        isDodging = true;
-        maxSpeed = 3f;
-        //if not walking currently, dodge in the direction the player is facing
-        if (moveInput == Vector2.zero)
-        {
-            if (spriteRenderer.flipX == true)
-            {
-                dodgeDirection = new Vector2(-1, 0);
-            }
-            else
-            {
-                dodgeDirection = new Vector2(1, 0);
-            }
-        }
-        else
-            dodgeDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
 
     }
 
     public void resetSpeed()
     {
         maxSpeed = 1.7f;
-        moveSpeed = 150f;
     }
 
     public void dodgeEnd()
     {
 
         isDodging = false;
+        dodgeSet = false;
     }
-    /* void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Enemy")
-        {
-            takeDamage(10);
-
-        }
-    } */
 
 }
