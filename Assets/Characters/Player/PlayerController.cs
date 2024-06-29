@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -13,7 +14,7 @@ public class PlayerController : MonoBehaviour
         public int maxStamina = 100; */
     /*     public int currentHealth; */
     public SwordAttack swordAttack;
-    public PlayerStats playerHealth;
+    public PlayerStats playerStats;
     Vector2 moveInput = Vector2.zero;
     SpriteRenderer spriteRenderer;
     public Rigidbody2D rb;
@@ -22,6 +23,10 @@ public class PlayerController : MonoBehaviour
     private bool isDodging = false;
     private Vector2 dodgeDirection;
     private bool dodgeSet = false;
+    private bool inStairs = false;
+    public Inventory inventory;
+    Vector2 lastMoveInput = Vector2.zero;
+
 
     void Start()
     {
@@ -113,11 +118,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
     void OnMove(InputValue value)
     {
-        moveInput = value.Get<Vector2>();
-    }
+        lastMoveInput = value.Get<Vector2>();
 
+        if (inStairs && lastMoveInput.x != 0)
+        {
+            moveInput = new Vector2(lastMoveInput.x, lastMoveInput.y - lastMoveInput.x).normalized;
+        }
+        else
+        {
+            moveInput = lastMoveInput;
+        }
+    }
 
     void OnFire()
     {
@@ -162,11 +176,11 @@ public class PlayerController : MonoBehaviour
 
     void OnDodge()
     {
-        if (!isDodging && playerHealth.Stamina >= 20)
+        if (!isDodging && playerStats.Stamina >= 20)
         {
             isDodging = true;
             LockMovement();
-            playerHealth.UpdateStamina(-20f);
+            playerStats.UpdateStamina(-20f);
             maxSpeed = maxSpeed * 2;
             //if not walking currently, dodge in the direction the player is facing
             if (moveInput == Vector2.zero)
@@ -221,4 +235,70 @@ public class PlayerController : MonoBehaviour
         dodgeSet = false;
     }
 
+    public void SetInStairs(bool inStairs)
+    {
+        this.inStairs = inStairs;
+        UpdateMoveInput();
+    }
+
+    private void UpdateMoveInput()
+    {
+        if (inStairs && lastMoveInput.x != 0)
+        {
+            moveInput = new Vector2(lastMoveInput.x, lastMoveInput.y - lastMoveInput.x).normalized;
+        }
+        else
+        {
+            moveInput = lastMoveInput;
+        }
+    }
+
+    public void StartBlinkEffect()
+    {
+        playerStats.SetInvincibility(true);
+        StartCoroutine(BlinkEffect());
+    }
+    private IEnumerator BlinkEffect()
+    {
+        // Blink red initially
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.color = Color.white;
+        // Blink transparency between 0.7 and 1 for a second
+        float duration = 1.0f;
+        float blinkInterval = 0.2f;
+        float elapsed = 0f;
+        bool isTransparent = false;
+
+        while (elapsed < duration)
+        {
+            elapsed += blinkInterval;
+            if (isTransparent)
+            {
+                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);
+            }
+            else
+            {
+                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0.7f);
+            }
+
+            isTransparent = !isTransparent;
+            yield return new WaitForSeconds(blinkInterval);
+        }
+
+        // Reset to original color (assuming original color is fully opaque white)
+        spriteRenderer.color = Color.white;
+        playerStats.SetInvincibility(false);
+    }
+
+
+    //if player collide with something, check if it has an item tag, and if it has, add it to the inventory
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Item")
+        {
+            Debug.Log("Item picked up");
+            inventory.AddItem(other.GetComponent<IInventoryItem>());
+        }
+    }
 }

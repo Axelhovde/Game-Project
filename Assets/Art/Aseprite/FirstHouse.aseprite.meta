@@ -123,15 +123,15 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: FirstHouse
     originalName: 
-    pivot: {x: 1.078125, y: -0.88135594}
+    pivot: {x: 0.61153847, y: -0.2530612}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 128
-      height: 59
+      width: 780
+      height: 245
     spriteID: 037f946271139d44a80884d05c1c14d6
     spriteBone: []
     spriteOutline: []
@@ -153,10 +153,10 @@ ScriptedImporter:
     - name: FirstHouse
       frameIndex: 0
       cellRect:
-        x: 22
-        y: 52
-        width: 128
-        height: 59
+        x: 3
+        y: 62
+        width: 780
+        height: 245
       spriteId: 037f946271139d44a80884d05c1c14d6
     linkedCells: []
     parentIndex: -1
@@ -164,4 +164,4 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 320, y: 320}
+  canvasSize: {x: 960, y: 320}

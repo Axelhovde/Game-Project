@@ -5,13 +5,12 @@ public class TransparencyHandler : MonoBehaviour
 {
     public float transparency = 0.7f; // Desired transparency when the player is inside the collider
     public float transitionDuration = 0.1f; // Duration of the transparency transition
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     private float originalAlpha;
     private Coroutine currentCoroutine;
 
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
             originalAlpha = spriteRenderer.color.a;

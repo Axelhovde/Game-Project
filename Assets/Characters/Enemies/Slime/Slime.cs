@@ -13,7 +13,7 @@ public class Slime : MonoBehaviour
     Animator animator;
     public float maxHealth = 10f;
     public float damage = 18f;
-    public float knockbackForce = 500f;
+    public float knockbackForce = 800f;
     public float moveSpeed = 150f;
     public float maxSpeed = 0.5f;
     public bool playerDetected = false;

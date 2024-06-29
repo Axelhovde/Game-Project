@@ -113,25 +113,27 @@ TextureImporter:
       name: woodFence_0
       rect:
         serializedVersion: 2
-        x: 16
+        x: 0
         y: 16
         width: 16
         height: 48
       alignment: 9
       pivot: {x: 0.5, y: 0.07}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -8, y: -24}
+        - {x: 8, y: -24}
+        - {x: 8, y: 24}
+        - {x: -8, y: 24}
       physicsShape:
-      - - {x: 4, y: -24}
-        - {x: -4, y: -24}
-        - {x: -4, y: -20}
-        - {x: -4, y: 4}
-        - {x: 4, y: 4}
-        - {x: 4, y: -11}
-        - {x: 8, y: -11}
-        - {x: 8, y: -17}
-        - {x: 8, y: -20}
-        - {x: 4, y: -20}
+      - - {x: -4, y: -22}
+        - {x: 8, y: -22}
+        - {x: 8, y: -12}
+        - {x: 2, y: -12}
+        - {x: 2, y: 4}
+        - {x: -2, y: 4}
+        - {x: -2, y: -12}
+        - {x: -4, y: -15}
       tessellationDetail: 0
       bones: []
       spriteID: 5ed08fa7a4f76614f8ec9ba6c1151bbe
@@ -144,19 +146,28 @@ TextureImporter:
       name: woodFence_1
       rect:
         serializedVersion: 2
-        x: 32
+        x: 16
         y: 16
         width: 16
         height: 48
       alignment: 9
       pivot: {x: 0.5, y: 0.07}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -8, y: -24}
+        - {x: 8, y: -24}
+        - {x: 8, y: 24}
+        - {x: -8, y: 24}
       physicsShape:
-      - - {x: -4, y: -22}
-        - {x: -4, y: -18}
-        - {x: 8, y: -18}
-        - {x: 8, y: -22}
+      - - {x: -8, y: -22}
+        - {x: -4, y: -22}
+        - {x: 4, y: -22}
+        - {x: 4, y: -14}
+        - {x: 2, y: -12}
+        - {x: 2, y: 4}
+        - {x: -2, y: 4}
+        - {x: -2, y: -12}
+        - {x: -8, y: -12}
       tessellationDetail: 0
       bones: []
       spriteID: e358cdbe4141ea942a24bc765eb25f86
@@ -169,19 +180,32 @@ TextureImporter:
       name: woodFence_2
       rect:
         serializedVersion: 2
-        x: 48
+        x: 32
         y: 16
         width: 16
         height: 48
       alignment: 9
       pivot: {x: 0.5, y: 0.07}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -8, y: -24}
+        - {x: 8, y: -24}
+        - {x: 8, y: 24}
+        - {x: -8, y: 24}
       physicsShape:
-      - - {x: -8, y: -22}
-        - {x: -8, y: -18}
-        - {x: 8, y: -18}
-        - {x: 8, y: -22}
+      - - {x: -2, y: -9}
+        - {x: -4, y: -10}
+        - {x: -4, y: -15}
+        - {x: -3, y: -17}
+        - {x: -3, y: -24}
+        - {x: 3, y: -24}
+        - {x: 3, y: -21}
+        - {x: 8, y: -21}
+        - {x: 8, y: -12}
+        - {x: 5, y: -12}
+        - {x: 2, y: -9}
+        - {x: 2, y: 4}
+        - {x: -2, y: 4}
       tessellationDetail: 0
       bones: []
       spriteID: 74c1b64f7a34f6b489cd9b63221021d5
@@ -194,19 +218,26 @@ TextureImporter:
       name: woodFence_3
       rect:
         serializedVersion: 2
-        x: 64
+        x: 48
         y: 16
         width: 16
         height: 48
       alignment: 9
       pivot: {x: 0.5, y: 0.07}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -8, y: -24}
+        - {x: 8, y: -24}
+        - {x: 8, y: 24}
+        - {x: -8, y: 24}
       physicsShape:
-      - - {x: -8, y: -22}
-        - {x: -8, y: -18}
-        - {x: 4, y: -18}
-        - {x: 4, y: -22}
+      - - {x: 4, y: -15}
+        - {x: -4, y: -15}
+        - {x: -4, y: -22}
+        - {x: 3, y: -22}
+        - {x: 4, y: -19}
+        - {x: 8, y: -19}
+        - {x: 8, y: -15}
       tessellationDetail: 0
       bones: []
       spriteID: 5ba237060c19afb44896db4328253814
@@ -219,19 +250,31 @@ TextureImporter:
       name: woodFence_4
       rect:
         serializedVersion: 2
-        x: 80
+        x: 64
         y: 16
         width: 16
         height: 48
       alignment: 9
       pivot: {x: 0.5, y: 0.07}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -8, y: -24}
+        - {x: 8, y: -24}
+        - {x: 8, y: 24}
+        - {x: -8, y: 24}
       physicsShape:
-      - - {x: -4, y: -24}
-        - {x: -4, y: -2}
-        - {x: 4, y: -2}
-        - {x: 4, y: -24}
+      - - {x: -3, y: -22}
+        - {x: 3, y: -22}
+        - {x: 4, y: -19}
+        - {x: 8, y: -19}
+        - {x: 8, y: -15}
+        - {x: 4, y: -15}
+        - {x: 4, y: -13}
+        - {x: -4, y: -13}
+        - {x: -4, y: -15}
+        - {x: -8, y: -15}
+        - {x: -8, y: -19}
+        - {x: -4, y: -19}
       tessellationDetail: 0
       bones: []
       spriteID: c4dc4a7189e668849b1b615a8bd16359
@@ -244,19 +287,26 @@ TextureImporter:
       name: woodFence_5
       rect:
         serializedVersion: 2
-        x: 96
+        x: 80
         y: 16
         width: 16
         height: 48
       alignment: 9
       pivot: {x: 0.5, y: 0.07}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -8, y: -24}
+        - {x: 8, y: -24}
+        - {x: 8, y: 24}
+        - {x: -8, y: 24}
       physicsShape:
-      - - {x: -4, y: -22}
-        - {x: -4, y: -17}
-        - {x: 4, y: -17}
+      - - {x: -4, y: -19}
+        - {x: -3, y: -22}
         - {x: 4, y: -22}
+        - {x: 4, y: -15}
+        - {x: -3, y: -15}
+        - {x: -8, y: -15}
+        - {x: -8, y: -19}
       tessellationDetail: 0
       bones: []
       spriteID: 18a2ede3b823a0e4e93af9db952d383c
@@ -269,19 +319,29 @@ TextureImporter:
       name: woodFence_6
       rect:
         serializedVersion: 2
-        x: 112
+        x: 96
         y: 16
         width: 16
         height: 48
       alignment: 9
       pivot: {x: 0.5, y: 0.07}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: 8, y: -24}
+        - {x: 8, y: 24}
+        - {x: -8, y: 24}
+        - {x: -8, y: -24}
       physicsShape:
-      - - {x: -4, y: -22}
-        - {x: -4, y: 2}
-        - {x: 4, y: 2}
+      - - {x: -3, y: -17}
+        - {x: -3, y: -22}
+        - {x: -2, y: -24}
+        - {x: 3, y: -24}
         - {x: 4, y: -22}
+        - {x: 4, y: -17}
+        - {x: 2, y: -15}
+        - {x: 2, y: 2}
+        - {x: -1, y: 2}
+        - {x: -1, y: -15}
       tessellationDetail: 0
       bones: []
       spriteID: 2f95f23aaacd1fd43b3ec3da65dbf61e
@@ -294,23 +354,23 @@ TextureImporter:
       name: woodFence_7
       rect:
         serializedVersion: 2
-        x: 128
+        x: 112
         y: 16
         width: 16
         height: 48
       alignment: 9
       pivot: {x: 0.5, y: 0.07}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -8, y: -24}
+        - {x: 8, y: -24}
+        - {x: 8, y: 24}
+        - {x: -8, y: 24}
       physicsShape:
-      - - {x: -4, y: -24}
-        - {x: -4, y: -22}
-        - {x: -8, y: -22}
-        - {x: -8, y: -13}
-        - {x: -4, y: -13}
-        - {x: -4, y: 2}
-        - {x: 4, y: 2}
-        - {x: 4, y: -24}
+      - - {x: -4, y: -22}
+        - {x: 4, y: -22}
+        - {x: 4, y: -16}
+        - {x: -4, y: -16}
       tessellationDetail: 0
       bones: []
       spriteID: 74e944ba170747a4e8251168ab041c98
@@ -323,6 +383,39 @@ TextureImporter:
       name: woodFence_8
       rect:
         serializedVersion: 2
+        x: 128
+        y: 16
+        width: 16
+        height: 48
+      alignment: 9
+      pivot: {x: 0.5, y: 0.07}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: -24}
+        - {x: 8, y: -24}
+        - {x: 8, y: 24}
+        - {x: -8, y: 24}
+      physicsShape:
+      - - {x: -4, y: -22}
+        - {x: 4, y: -22}
+        - {x: 4, y: -16}
+        - {x: 2, y: -14}
+        - {x: 2, y: 3}
+        - {x: -2, y: 3}
+        - {x: -2, y: -14}
+        - {x: -4, y: -16}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13fbbad2f6dba694e98b646925bea60b
+      internalID: 1757928502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: woodFence_9
+      rect:
+        serializedVersion: 2
         x: 144
         y: 16
         width: 16
@@ -330,24 +423,71 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.5, y: 0.07}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -8, y: -24}
+        - {x: 8, y: -24}
+        - {x: 8, y: 24}
+        - {x: -8, y: 24}
       physicsShape:
-      - - {x: 4, y: -24}
-        - {x: -4, y: -24}
-        - {x: -4, y: -22}
-        - {x: -8, y: -22}
-        - {x: -8, y: -14}
-        - {x: -4, y: -14}
-        - {x: -4, y: 2}
-        - {x: 4, y: 2}
-        - {x: 4, y: -14}
-        - {x: 8, y: -14}
-        - {x: 8, y: -22}
-        - {x: 4, y: -22}
+      - - {x: -2, y: -21}
+        - {x: -2, y: -24}
+        - {x: 2, y: -24}
+        - {x: 2, y: -21}
+        - {x: 4, y: -20}
+        - {x: 4, y: -15}
+        - {x: 2, y: -13}
+        - {x: 2, y: 6}
+        - {x: -2, y: 6}
+        - {x: -2, y: -13}
+        - {x: -4, y: -15}
+        - {x: -8, y: -15}
+        - {x: -8, y: -19}
+        - {x: -4, y: -19}
       tessellationDetail: 0
       bones: []
-      spriteID: 13fbbad2f6dba694e98b646925bea60b
-      internalID: 1757928502
+      spriteID: 88174f0e92a2d1a428eac9763b60d1ff
+      internalID: -825098832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: woodFence_10
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 16
+        width: 16
+        height: 48
+      alignment: 9
+      pivot: {x: 0.5, y: 0.07}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: -24}
+        - {x: 8, y: -24}
+        - {x: 8, y: 24}
+        - {x: -8, y: 24}
+      physicsShape:
+      - - {x: -8, y: -19}
+        - {x: -4, y: -19}
+        - {x: -2, y: -21}
+        - {x: -2, y: -24}
+        - {x: 2, y: -24}
+        - {x: 2, y: -21}
+        - {x: 4, y: -19}
+        - {x: 8, y: -19}
+        - {x: 8, y: -14}
+        - {x: 4, y: -14}
+        - {x: 2, y: -13}
+        - {x: 2, y: 5}
+        - {x: -2, y: 5}
+        - {x: -2, y: -13}
+        - {x: -4, y: -14}
+        - {x: -8, y: -14}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 937c93eda89e57049b96bb3e2e874bf9
+      internalID: -1348073040
       vertices: []
       indices: 
       edges: []
@@ -365,6 +505,7 @@ TextureImporter:
     nameFileIdTable:
       woodFence_0: -262090756
       woodFence_1: 1388044781
+      woodFence_10: -1348073040
       woodFence_2: 1272398374
       woodFence_3: -1268335769
       woodFence_4: 2922577
@@ -372,6 +513,7 @@ TextureImporter:
       woodFence_6: 1806910049
       woodFence_7: 455880518
       woodFence_8: 1757928502
+      woodFence_9: -825098832
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

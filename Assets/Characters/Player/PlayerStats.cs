@@ -16,7 +16,13 @@ public class PlayerStats : MonoBehaviour, IDamageable
     private float health;
     private float stamina;
     Rigidbody2D rb;
+    public PlayerController playerController;
+    private bool invinicible = false;
 
+    public void SetInvincibility(bool invinicible)
+    {
+        this.invinicible = invinicible;
+    }
     public int GetLevel()
     {
         return level;
@@ -103,7 +109,11 @@ public class PlayerStats : MonoBehaviour, IDamageable
 
     public void OnHit(float damage)
     {
-        SetHealth(GetHealth() - damage);
+        if (!invinicible)
+        {
+            SetHealth(GetHealth() - damage);
+            playerController.StartBlinkEffect();
+        }
     }
 
     public void UpdateStamina(float staminaUpdate)
@@ -127,10 +137,12 @@ public class PlayerStats : MonoBehaviour, IDamageable
 
     public void OnHit(float damage, Vector2 knockback)
     {
-        Debug.Log(GetHealth());
-        SetHealth(GetHealth() - damage);
-        rb.AddForce(knockback);
-        Debug.Log("Player was hit" + (GetHealth() - damage));
+        if (!invinicible)
+        {
+            SetHealth(GetHealth() - damage);
+            rb.AddForce(knockback);
+            playerController.StartBlinkEffect();
+        }
     }
     public void RemoveSelf()
     {

@@ -8,6 +8,7 @@ TagManager:
   - PlayerHitbox
   - Destructible
   - Undefined
+  - Item
   layers:
   - Default
   - TransparentFX

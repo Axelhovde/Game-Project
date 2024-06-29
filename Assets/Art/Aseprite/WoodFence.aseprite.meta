@@ -123,15 +123,15 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: WoodFence
     originalName: 
-    pivot: {x: 0.49685538, y: -0.25}
+    pivot: {x: 0.5402299, y: -0.4473684}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 159
-      height: 44
+      width: 174
+      height: 38
     spriteID: 531a9b6e49a177c4f89b2efebfe2c295
     spriteBone: []
     spriteOutline: []
@@ -153,10 +153,10 @@ ScriptedImporter:
     - name: WoodFence
       frameIndex: 0
       cellRect:
-        x: 17
-        y: 11
-        width: 159
-        height: 44
+        x: 2
+        y: 17
+        width: 174
+        height: 38
       spriteId: 531a9b6e49a177c4f89b2efebfe2c295
     linkedCells: []
     parentIndex: -1

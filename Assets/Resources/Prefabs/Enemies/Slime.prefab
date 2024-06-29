@@ -168,7 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   damage: 18
-  knockbackForce: 500
+  knockbackForce: 800
   moveSpeed: 150
   maxSpeed: 0.5
   playerDetected: 0

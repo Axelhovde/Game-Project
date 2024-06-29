@@ -81,6 +81,7 @@ GameObject:
   - component: {fileID: 1436665132355860361}
   - component: {fileID: 1232375627999993299}
   - component: {fileID: 2429128031523683274}
+  - component: {fileID: 5352212437112375296}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Untagged
@@ -258,6 +259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transparency: 0.6
   transitionDuration: 0.1
+  spriteRenderer: {fileID: 8961310626534518642}
 --- !u!114 &2429128031523683274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,3 +275,35 @@ MonoBehaviour:
   shakeDuration: 0.5
   rotationMagnitude: 3
   rotationFrequency: 20
+--- !u!114 &5352212437112375296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6617255701727329765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 00000000
+  m_ShapePath:
+  - {x: -0.060115695, y: 0.0030804724, z: -0.000000022351742}
+  - {x: -0.05561495, y: 0.07230945, z: 0}
+  - {x: -0.0006008148, y: 0.088688865, z: 0}
+  - {x: 0.053210378, y: 0.07049622, z: -0.000000022351742}
+  - {x: 0.05737734, y: 0.0011562556, z: 0}
+  - {x: -0.003545761, y: -0.027254343, z: -0.000000022351742}
+  m_ShapePathHash: 110842469
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 142032
+  m_LocalBounds:
+    m_Center: {x: -0.0013691783, y: 0.030717261, z: 0}
+    m_Extent: {x: 0.058746517, y: 0.057971604, z: 0}
