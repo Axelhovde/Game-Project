@@ -123,7 +123,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: stoneStairs
     originalName: 
-    pivot: {x: 0.4925373, y: -0.2430279}
+    pivot: {x: 0.4925373, y: -0.33333334}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -131,7 +131,7 @@ ScriptedImporter:
       x: 4
       y: 4
       width: 268
-      height: 502
+      height: 468
     spriteID: f229ba3e011c9da43a698be9e74d4784
     spriteBone: []
     spriteOutline: []
@@ -154,9 +154,9 @@ ScriptedImporter:
       frameIndex: 0
       cellRect:
         x: 28
-        y: 122
+        y: 156
         width: 268
-        height: 502
+        height: 468
       spriteId: f229ba3e011c9da43a698be9e74d4784
     linkedCells: []
     parentIndex: -1

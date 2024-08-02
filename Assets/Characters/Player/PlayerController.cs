@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,7 +28,9 @@ public class PlayerController : MonoBehaviour
     private bool inStairs = false;
     public Inventory inventory;
     Vector2 lastMoveInput = Vector2.zero;
-
+    private bool PerformingAction = false;
+    private bool pendingAttack = false;
+    private Vector2 pendingDirection;
 
     void Start()
     {
@@ -72,7 +76,8 @@ public class PlayerController : MonoBehaviour
             if (moveInput.x == 0)
             {
                 animator.SetBool("isMovingX", false);
-                spriteRenderer.flipX = false;
+                if (!PerformingAction)
+                    spriteRenderer.flipX = false;
             }
             else
             {
@@ -101,11 +106,11 @@ public class PlayerController : MonoBehaviour
             {
 
                 rb.velocity = Vector2.ClampMagnitude(rb.velocity + (moveInput * moveSpeed * Time.deltaTime), maxSpeed);
-                if (moveInput.x > 0)
+                if (moveInput.x > 0 && !PerformingAction)
                 {
                     spriteRenderer.flipX = false;
                 }
-                else if (moveInput.x < 0)
+                else if (moveInput.x < 0 && !PerformingAction)
                 {
                     spriteRenderer.flipX = true;
                 }
@@ -135,17 +140,70 @@ public class PlayerController : MonoBehaviour
 
     void OnFire()
     {
-        animator.SetTrigger("swordAttack");
+        Vector2 mousePosition = Mouse.current.position.ReadValue();
+        Vector2 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector2 direction = (worldMousePosition - (Vector2)transform.position).normalized;
+        if (PerformingAction)
+        {
+            pendingAttack = true;
+            pendingDirection = direction;
+
+        }
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            if (direction.x > 0)
+            {
+                if (!PerformingAction) spriteRenderer.flipX = false;
+                animator.SetTrigger("attackRightLeft");
+
+            }
+            else
+            {
+                if (!PerformingAction) spriteRenderer.flipX = true;
+                animator.SetTrigger("attackRightLeft");
+
+            }
+        }
+        else
+        {
+            if (direction.y > 0)
+            {
+                animator.SetTrigger("attackUp");
+            }
+            else
+            {
+                animator.SetTrigger("attackDown");
+            }
+        }
+        IsPerformingAction(true);
+    }
+
+    public void AttackDirection()
+    {
+        if (Mathf.Abs(pendingDirection.x) > Mathf.Abs(pendingDirection.y))
+        {
+            if (pendingDirection.x > 0)
+            {
+                spriteRenderer.flipX = false;
+
+            }
+            else
+            {
+                spriteRenderer.flipX = true;
+            }
+        }
+        pendingAttack = false;
+        pendingDirection = Vector2.zero;
     }
 
     public void SwordAttack()
     {
         LockMovement();
-        if (!(animator.GetBool("isMovingX")) && animator.GetFloat("moveY") < 0)
+        if (animator.GetAnimatorTransitionInfo(0).IsName("player_attackUp"))
         {
             swordAttack.AttackUp();
         }
-        else if (!(animator.GetBool("isMovingX")) && animator.GetFloat("moveY") > 0)
+        else if (animator.GetAnimatorTransitionInfo(0).IsName("player_AttackDownWindUp"))
         {
             swordAttack.AttackDown();
         }
@@ -157,6 +215,17 @@ public class PlayerController : MonoBehaviour
         {
             swordAttack.AttackLeftRight(true);
         }
+    }
+
+    public void StopAction()
+    {
+        print(pendingAttack);
+        if (!pendingAttack)
+        {
+            IsPerformingAction(false);
+            UpdateAnimatorParameters();
+        }
+        pendingAttack = false;
     }
 
     public void StopSwordAttack()
@@ -173,7 +242,15 @@ public class PlayerController : MonoBehaviour
     {
         canMove = true;
     }
+    public void IsPerformingAction(bool isPerformingAction)
+    {
+        PerformingAction = isPerformingAction;
+    }
 
+    void OnBlock()
+    {
+        animator.SetBool("Block", true);
+    }
     void OnDodge()
     {
         if (!isDodging && playerStats.Stamina >= 20)
@@ -203,6 +280,7 @@ public class PlayerController : MonoBehaviour
                 {
                     dodgeDirection = new Vector2(1, 0);
                 }
+                print(dodgeDirection);
             }
             else
             {
@@ -210,6 +288,7 @@ public class PlayerController : MonoBehaviour
                 float inputY = Input.GetAxisRaw("Vertical");
                 //dodgeDirection is the input x and y values rounded to 1 or 0, and then normalized
                 dodgeDirection = new Vector2(Mathf.Round(inputX), Mathf.Round(inputY)).normalized;
+                print("optional direction: " + dodgeDirection);
             }
         }
 
