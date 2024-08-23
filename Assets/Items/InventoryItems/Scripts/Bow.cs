@@ -21,6 +21,14 @@ public class Bow : MonoBehaviour, IInventoryItem
         }
     }
 
+    public string WeaponType
+    {
+        get
+        {
+            return "Bow";
+        }
+    }
+
     public void OnPickup()
     {
         gameObject.SetActive(false);

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class InventoryPanelController : MonoBehaviour
 {
     public Inventory Inventory;
+    public PlayerController PlayerController;
     private int scrollValue = 1;
     private float scroll = 0;
     PlayerInputActions inputActions;
@@ -23,7 +24,7 @@ public class InventoryPanelController : MonoBehaviour
 
     private void Update()
     {
-        if (scroll > 0)
+        if (scroll < 0)
         {
             if (scrollValue < 9)
             {
@@ -34,8 +35,9 @@ public class InventoryPanelController : MonoBehaviour
                 scrollValue = 1;
             }
             ChangeSelectedSlot(scrollValue);
+            changeWeapon(scrollValue);
         }
-        else if (scroll < 0)
+        else if (scroll > 0)
         {
             if (scrollValue > 1)
             {
@@ -46,7 +48,9 @@ public class InventoryPanelController : MonoBehaviour
                 scrollValue = 9;
             }
             ChangeSelectedSlot(scrollValue);
+            changeWeapon(scrollValue);
         }
+        
     }
 
     #region - Enable/Disable Input Actions -
@@ -70,16 +74,38 @@ public class InventoryPanelController : MonoBehaviour
     private void ChangeSelectedSlot(int scrollValue)
     {
         //get child called slot (n) and change image
-        if (image != null)
+        Image newImage = transform.Find("Slot (" + scrollValue + ")")?.GetComponent<Image>();
+        
+        if (newImage != null)
         {
-            image.sprite = _NotSelectedImage;
+            if (image != null)
+            {
+                image.sprite = _NotSelectedImage;
+            }
+            image = newImage;
+            image.sprite = _SelectedImage;
         }
-        image = transform.Find("Slot (" + scrollValue + ")").GetComponent<Image>();
-        image.sprite = _SelectedImage;
-
     }
 
-
+   private void changeWeapon(int scrollValue)
+    {
+        // Get the list of items from the inventory
+        List<IInventoryItem> itemList = Inventory.GetItemList();
+        
+        // Check if the scrollValue is within the valid range of the list
+        if (scrollValue > 0 && scrollValue <= itemList.Count && itemList[scrollValue - 1] != null)
+        {
+            // Set the selected weapon to the weapon in the corresponding slot
+            PlayerController.SetSelectedWeapon(itemList[scrollValue - 1].WeaponType);
+            print("Selected Weapon: " + itemList[scrollValue - 1].WeaponType);
+        }
+        else
+        {
+            // If there's no valid item, clear the selected weapon
+            PlayerController.SetSelectedWeapon("");
+            print("Selected Weapon: None");
+        }
+    }
 
     private void InventoryScript_ItemAdded(object sender, InventoryEventArgs e)
     {
@@ -97,4 +123,5 @@ public class InventoryPanelController : MonoBehaviour
             }
         }
     }
+
 }

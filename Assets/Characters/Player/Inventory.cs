@@ -25,4 +25,8 @@ public class Inventory : MonoBehaviour
             }
         }
     }
+    public List<IInventoryItem> GetItemList()
+    {
+        return mItems;
+    }
 }

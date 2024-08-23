@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
@@ -16,11 +17,15 @@ public class PlayerController : MonoBehaviour
         public int maxStamina = 100; */
     /*     public int currentHealth; */
     public SwordAttack swordAttack;
+    public SwordAttack swordAttackDown;
+    public SwordAttack swordAttackUp;
     public PlayerStats playerStats;
     Vector2 moveInput = Vector2.zero;
     SpriteRenderer spriteRenderer;
+    SpriteRenderer weaponSpriteRenderer;
     public Rigidbody2D rb;
-    Animator animator;
+    Animator playerAnimator;
+    Animator weaponAnimator;
     bool canMove = true;
     private bool isDodging = false;
     private Vector2 dodgeDirection;
@@ -31,16 +36,35 @@ public class PlayerController : MonoBehaviour
     private bool PerformingAction = false;
     private bool pendingAttack = false;
     private Vector2 pendingDirection;
+    /* public GameObject crosshair; */
+    public GameObject arrowPrefab;
+
+
+    //TODO: FIX SELECTED WEAPON
+    private String selectedWeapon = "";
+    private float chargeTime = 0f;
+    private float maxChargeTime = 1.5f; // Maximum charge time for full power
+    private bool isCharging = false;
+    private Vector2 fireDirection;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
+        playerAnimator = GetComponent<Animator>();
+        weaponAnimator = transform.GetChild(0).GetComponent<Animator>();
+        weaponSpriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-
     }
-
     private void FixedUpdate()
     {
+        if (isCharging)
+        {
+            chargeTime += Time.deltaTime;
+            chargeTime = Mathf.Clamp(chargeTime, 0f, maxChargeTime);
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
+            Vector2 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            Vector2 direction = (worldMousePosition - (Vector2)transform.position).normalized;
+            CheckMouseDirection(direction);
+        }
         if (canMove)
         {
             Move();
@@ -52,45 +76,53 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void SetSelectedWeapon(String weapon)
+    {
+        selectedWeapon = weapon;
+    }
+    public String GetSelectedWeapon()
+    {
+        return selectedWeapon;
+    }
     void SetDodgeAnimatorParameters()
     {
-        animator.SetBool("isMoving", true);
-        animator.SetFloat("moveX", dodgeDirection.x);
-        animator.SetFloat("moveY", dodgeDirection.y);
-        animator.SetBool("isMoving", true);
-        animator.SetTrigger("dodge");
+        playerAnimator.SetBool("isMoving", true);
+        playerAnimator.SetFloat("moveX", dodgeDirection.x);
+        playerAnimator.SetFloat("moveY", dodgeDirection.y);
+        playerAnimator.SetBool("isMoving", true);
+        playerAnimator.SetTrigger("dodge");
         dodgeSet = true;
     }
     void UpdateAnimatorParameters()
     {
-        animator.SetFloat("moveX", moveInput.x);
-        animator.SetFloat("moveY", moveInput.y);
+        playerAnimator.SetFloat("moveX", moveInput.x);
+        playerAnimator.SetFloat("moveY", moveInput.y);
         if (moveInput == Vector2.zero)
         {
-            animator.SetBool("isMoving", false);
+            playerAnimator.SetBool("isMoving", false);
         }
         else
         {
-            animator.SetBool("isMoving", true);
+            playerAnimator.SetBool("isMoving", true);
             //if moving in the x direction
             if (moveInput.x == 0)
             {
-                animator.SetBool("isMovingX", false);
+                playerAnimator.SetBool("isMovingX", false);
                 if (!PerformingAction)
                     spriteRenderer.flipX = false;
             }
             else
             {
-                animator.SetBool("isMovingX", true);
+                playerAnimator.SetBool("isMovingX", true);
             }
             //if moving in the y direction
             if (moveInput.y == 0)
             {
-                animator.SetBool("isMovingY", false);
+                playerAnimator.SetBool("isMovingY", false);
             }
             else
             {
-                animator.SetBool("isMovingY", true);
+                playerAnimator.SetBool("isMovingY", true);
             }
         }
     }
@@ -138,44 +170,161 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnFire()
+    void OnFire(InputValue value)
     {
         Vector2 mousePosition = Mouse.current.position.ReadValue();
         Vector2 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
         Vector2 direction = (worldMousePosition - (Vector2)transform.position).normalized;
-        if (PerformingAction)
+        if (selectedWeapon == "Bow")
         {
-            pendingAttack = true;
-            pendingDirection = direction;
+            if (value.isPressed)
+            {
+                CheckMouseDirection(direction);
+                StartCharging();
+                IsPerformingAction(true);
+            }
+            else
+            {
+                ReleaseFire();
+            }
+        }
+        else if (selectedWeapon == "Sword")
+        {
+            if (value.isPressed)
+            {
+                Attack(direction);
 
+            }
+        }
+
+    }
+
+    #region Archery
+    void StartCharging()
+    {
+        chargeTime = 0f;
+        isCharging = true;
+        LockMovement();
+
+        // Optionally, you could start a charging animation here.
+        playerAnimator.SetBool("BowCharge", true);
+        weaponAnimator.SetBool("BowCharge", true);
+    }
+
+    void ReleaseFire()
+    {
+        if (!isCharging) return;
+
+        isCharging = false;
+        UnlockMovement();
+        IsPerformingAction(false);
+        float chargeRatio = chargeTime / maxChargeTime;
+
+        // Adjust speed or damage based on charge time
+        float arrowSpeed = Mathf.Lerp(1f, 3f, chargeRatio); // Example: Adjusting speed based on charge
+        int arrowDamage = (int)Mathf.Lerp(2f, 5f, chargeRatio); // Example: Adjusting damage based on charge
+        print(arrowDamage);
+        float arrowKnockback = Mathf.Lerp(50f, 100f, chargeRatio); // Example: Adjusting knockback based on charge
+        float arrowLifetime = Mathf.Lerp(0.2f, 5f, chargeRatio); // Example: Adjusting lifetime based on charge
+        FireArrow(fireDirection, arrowSpeed, arrowDamage, arrowKnockback, arrowLifetime);
+
+        // Optionally, you could stop the charging animation here.
+        playerAnimator.SetBool("BowCharge", false);
+        weaponAnimator.SetBool("BowCharge", false);
+    }
+
+    public void FireArrow(Vector2 direction, float speed, int damage, float knockbackForce, float lifetime)
+    {
+        if (playerStats.Stamina >= 10)
+        {
+            playerStats.UpdateStamina(-10f);
+
+            // Make the arrow spawn a bit higher on the y-axis
+            Vector2 spawnPosition = new Vector2(transform.position.x, transform.position.y + 0.17f);
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
+            Vector2 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            fireDirection = (worldMousePosition - spawnPosition).normalized;
+            GameObject arrowInstance = Instantiate(arrowPrefab, spawnPosition, Quaternion.identity);
+
+            // Set the direction and speed of the arrow
+            Arrow arrow = arrowInstance.GetComponent<Arrow>();
+            arrow.SetDirectionAndSpeed(fireDirection, speed, damage, knockbackForce, lifetime);
+        }
+    }
+    #endregion
+
+    public void CheckMouseDirection(Vector2 direction)
+    {
+        if (isCharging)
+        {
+            if (direction.x < 0)
+            {
+                weaponSpriteRenderer.flipX = true;
+                spriteRenderer.flipX = true;
+            }
+            else
+            {
+                weaponSpriteRenderer.flipX = false;
+                spriteRenderer.flipX = false;
+            }
         }
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
         {
             if (direction.x > 0)
             {
-                if (!PerformingAction) spriteRenderer.flipX = false;
-                animator.SetTrigger("attackRightLeft");
+                if (!PerformingAction)
+                {
+                    spriteRenderer.flipX = false;
+                }
 
+                playerAnimator.SetInteger("Direction", 0);
+                weaponAnimator.SetInteger("Direction", 0);
             }
             else
             {
-                if (!PerformingAction) spriteRenderer.flipX = true;
-                animator.SetTrigger("attackRightLeft");
-
+                if (!PerformingAction)
+                {
+                    spriteRenderer.flipX = true;
+                }
+                playerAnimator.SetInteger("Direction", 0);
+                weaponAnimator.SetInteger("Direction", 0);
             }
         }
         else
         {
             if (direction.y > 0)
             {
-                animator.SetTrigger("attackUp");
+                playerAnimator.SetInteger("Direction", 1);
+                weaponAnimator.SetInteger("Direction", 1);
             }
             else
             {
-                animator.SetTrigger("attackDown");
+                playerAnimator.SetInteger("Direction", -1);
+                weaponAnimator.SetInteger("Direction", -1);
             }
         }
+    }
+
+    public void Attack(Vector2 direction)
+    {
+        if (PerformingAction)
+        {
+            pendingAttack = true;
+            pendingDirection = direction;
+
+        }
+        CheckMouseDirection(direction);
+        if(spriteRenderer.flipX == true)
+        {
+            weaponSpriteRenderer.flipX = true;
+        }
+        else
+        {
+            weaponSpriteRenderer.flipX = false;
+        }
         IsPerformingAction(true);
+        playerAnimator.SetTrigger("Attack");
+        weaponAnimator.SetTrigger("Attack");
     }
 
     public void AttackDirection()
@@ -198,28 +347,30 @@ public class PlayerController : MonoBehaviour
 
     public void SwordAttack()
     {
+        playerStats.UpdateStamina(-7f);
         LockMovement();
-        if (animator.GetAnimatorTransitionInfo(0).IsName("player_attackUp"))
+        if (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("player_AttackUp") ||
+        playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("player_AttackUp2"))
         {
-            swordAttack.AttackUp();
+            swordAttackUp.Attack();
         }
-        else if (animator.GetAnimatorTransitionInfo(0).IsName("player_AttackDownWindUp"))
+        else if (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("player_AttackDown") ||
+        playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("player_AttackDown2"))
         {
-            swordAttack.AttackDown();
+            swordAttackDown.Attack();
         }
         else if (spriteRenderer.flipX == true)
         {
-            swordAttack.AttackLeftRight(false);
+            swordAttack.Attack(false);
         }
         else
         {
-            swordAttack.AttackLeftRight(true);
+            swordAttack.Attack(true);
         }
     }
 
     public void StopAction()
     {
-        print(pendingAttack);
         if (!pendingAttack)
         {
             IsPerformingAction(false);
@@ -232,6 +383,8 @@ public class PlayerController : MonoBehaviour
     {
         UnlockMovement();
         swordAttack.StopAttack();
+        swordAttackDown.StopAttack();
+        swordAttackUp.StopAttack();
     }
     public void LockMovement()
     {
@@ -249,7 +402,7 @@ public class PlayerController : MonoBehaviour
 
     void OnBlock()
     {
-        animator.SetBool("Block", true);
+        playerAnimator.SetBool("Block", true);
     }
     void OnDodge()
     {
@@ -263,12 +416,12 @@ public class PlayerController : MonoBehaviour
             if (moveInput == Vector2.zero)
             {
                 //if animator is in player_idleUpwards state, dodge upwards
-                if (animator.GetCurrentAnimatorStateInfo(0).IsName("player_idleUpwards"))
+                if (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("player_idleUpwards"))
                 {
                     dodgeDirection = new Vector2(0, 1);
                 }
                 //if animator is in player_idle state, dodge downwards
-                else if (animator.GetCurrentAnimatorStateInfo(0).IsName("player_idle"))
+                else if (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("player_idle"))
                 {
                     dodgeDirection = new Vector2(0, -1);
                 }
@@ -280,7 +433,6 @@ public class PlayerController : MonoBehaviour
                 {
                     dodgeDirection = new Vector2(1, 0);
                 }
-                print(dodgeDirection);
             }
             else
             {
@@ -288,7 +440,6 @@ public class PlayerController : MonoBehaviour
                 float inputY = Input.GetAxisRaw("Vertical");
                 //dodgeDirection is the input x and y values rounded to 1 or 0, and then normalized
                 dodgeDirection = new Vector2(Mathf.Round(inputX), Mathf.Round(inputY)).normalized;
-                print("optional direction: " + dodgeDirection);
             }
         }
 
@@ -369,7 +520,10 @@ public class PlayerController : MonoBehaviour
         spriteRenderer.color = Color.white;
         playerStats.SetInvincibility(false);
     }
-
+    public void AttackStaminaUse()
+    {
+        playerStats.UpdateStamina(-5f);
+    }
 
     //if player collide with something, check if it has an item tag, and if it has, add it to the inventory
     private void OnTriggerEnter2D(Collider2D other)

@@ -6,6 +6,7 @@ using UnityEngine;
 public interface IInventoryItem
 {
     string Name { get; }
+    string WeaponType { get; }
     Sprite Image { get; }
     void OnPickup();
     void OnDrop();

@@ -22,13 +22,13 @@ AnimationClip:
     curve:
     - time: 0
       value: {fileID: 194366615, guid: 637f9c6130f2eab4f80439fc17211de5, type: 3}
-    - time: 0.1
+    - time: 0.06666667
       value: {fileID: 1039734684, guid: 637f9c6130f2eab4f80439fc17211de5, type: 3}
-    - time: 0.21666667
+    - time: 0.18333334
       value: {fileID: 1225984614, guid: 637f9c6130f2eab4f80439fc17211de5, type: 3}
-    - time: 0.33333334
+    - time: 0.3
       value: {fileID: -1180868630, guid: 637f9c6130f2eab4f80439fc17211de5, type: 3}
-    - time: 0.48333332
+    - time: 0.41666666
       value: {fileID: -1180868630, guid: 637f9c6130f2eab4f80439fc17211de5, type: 3}
     attribute: m_Sprite
     path: 
@@ -62,7 +62,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.5
+    m_StopTime: 0.43333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -89,21 +89,21 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.1
+  - time: 0.06666667
     functionName: SwordAttack
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.26666668
+  - time: 0.28333333
     functionName: StopSwordAttack
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.5
+  - time: 0.41666666
     functionName: StopAction
     data: 
     objectReferenceParameter: {fileID: 0}

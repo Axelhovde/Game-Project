@@ -21,6 +21,14 @@ public class BasicSword : MonoBehaviour, IInventoryItem
         }
     }
 
+    public string WeaponType
+    {
+        get
+        {
+            return "Sword";
+        }
+    }
+
     public void OnPickup()
     {
         gameObject.SetActive(false);
